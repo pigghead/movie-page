@@ -1,1 +1,0 @@
-console.log() // global object, access anywhere in any file
