@@ -17,47 +17,70 @@ export default class ReviewsDAO {
 
     static async addReview(movieId, user, review) {
         try {
-            // json parsed obj containing params'
+            // json parsed obj containing params
             const reviewDoc = {
                 movieId: movieId,
                 user: user,
                 review: review
             }
 
-        } catch (e) {
+            // .insertOne() adds to collection
+            return await reviews.insertOne(reviewDoc)
 
+        } catch (e) {
+            console.error(`Unable to post review: ${e}`);
+            return {error:e};
         }
     }
 
-    static async getReview(movieId, user, review) {
+    static async getReview(reviewid) {
         try {
-
+            return await reviews.findOne({_id: ObjectId(reviewId)});
         } catch (e) {
-            
+            console.error(`Unable to get review: ${e}`);
+            return {error:e};
         }
     }
 
-    static async getReviews(movieId, user, review) {
+    static async getReviewsByMovieId(movieId) {
+        console.log('mov', movieId);
         try {
+            const cursor = await reviews.find(
+                { movieId: parseInt(moveId) }
+            );
 
+            return cursor.toArray();
         } catch (e) {
-            
+            console.error(`Unable to get review: ${e}`);
+            return { error: e }
         }
     }
 
-    static async updateReview(movieId, user, review) {
+    static async updateReview(reviewId, user, review) {
+        console.log('rev', reviewId);
         try {
+            const updateResponse = await reviews.updateOne(
+                { _id: ObjectId(reviewId) },
+                { $set: { user: user, review: review } } 
+            );
 
+            return updateResponse;
         } catch (e) {
-            
+            console.error(`Unable to update review: ${e}`);
+            return { error: e };
         }
     }
 
-    static async deleteReview(movieId, user, review) {
+    static async deleteReview(reviewId) {
         try {
+            const deleteResponse = await reviews.deleteOne(
+                { _id: ObjectId(reviewId) }
+            );
 
+            return deleteResponse;
         } catch (e) {
-            
+            console.error(`Unable to delete review: ${e}`);
+            return { error: e };
         }
     }
 }
