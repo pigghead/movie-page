@@ -14,7 +14,7 @@ export default class ReviewsController {
                 review,
                 user
             );
-            res.json({status: 'success',Movie_id:req.body.movieId});
+            res.json({status: 'success'});
         } catch (e) {
             res.status(500).json({error: e.message});
         }
@@ -22,8 +22,9 @@ export default class ReviewsController {
 
     static async apiGetReview(req, res, next) {
         try {
+            // we know the req.params.id exists
             let id = req.params.id || {};  // params are what are found in the url (:id,etc)
-            let review = ReviewsDAO.getReview(id);
+            let review = await ReviewsDAO.getReview(id);
             if(!review) {
                 res.status(404).json({error: 'Not found'});
                 return;
@@ -43,8 +44,8 @@ export default class ReviewsController {
 
             const reviewResponse = ReviewsDAO.updateReview(
                 reviewId,
-                user,
-                review
+                review,
+                user
             );
 
             var {error} = reviewResponse;
@@ -75,7 +76,7 @@ export default class ReviewsController {
     static async apiGetReviews(req, res, next) {
         try {
             let id = req.params.id || {};
-            let reviews = await ReviewsDAO.getReviews(id);
+            let reviews = await ReviewsDAO.getReviewsByMovieId(id);
             if(!reviews) {
                 res.status(404).json({status: 'unable to get reviews for movie'});
                 return;

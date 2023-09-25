@@ -1,6 +1,6 @@
 // where we interact with the database
-import mongodb from 'mongodb';
-const ObjectId = mongodb.ObjectId;  // must search by specific datatype called ObjectID
+import mongodb, { ObjectId } from 'mongodb';
+//const ObjId = mongodb.ObjectId;  // must search by specific datatype called ObjectID
 
 let reviews;
 
@@ -15,13 +15,13 @@ export default class ReviewsDAO {
         }
     }
 
-    static async addReview(movieId, user, review) {
+    static async addReview(movieId, review, user) {
         try {
             // json parsed obj containing params
             const reviewDoc = {
                 movieId: movieId,
-                user: user,
-                review: review
+                review: review,
+                user: user
             }
 
             // .insertOne() adds to collection
@@ -33,12 +33,16 @@ export default class ReviewsDAO {
         }
     }
 
-    static async getReview(reviewid) {
+    // doesnt work
+    static async getReview(reviewId) {
         try {
-            return await reviews.findOne({_id: ObjectId(reviewId)});
+            const query = { _id: new ObjectId(reviewId) };
+            const rev = await reviews.findOne(query);
+            //console.log(rev);
+            return rev;
         } catch (e) {
-            console.error(`Unable to get review: ${e}`);
-            return {error:e};
+            //console.error(`Unable to get review: ${e}`);
+            return {error:`Unable to get review: ${e}`};
         }
     }
 
@@ -46,7 +50,7 @@ export default class ReviewsDAO {
         try {
             // finding multiple items returns a cursor
             const cursor = await reviews.find(
-                { movieId: parseInt(moveId) }
+                { movieId: parseInt(movieId) }
             );
 
             return cursor.toArray();
@@ -56,10 +60,10 @@ export default class ReviewsDAO {
         }
     }
 
-    static async updateReview(reviewId, user, review) {
+    static async updateReview(reviewId, review, user) {
         try {
             const updateResponse = await reviews.updateOne(
-                { _id: ObjectId(reviewId) },
+                { _id: new ObjectId(reviewId) },
                 { $set: { user: user, review: review } } 
             );
 
