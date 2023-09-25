@@ -7,12 +7,14 @@ export default class ReviewsController {
             const review = req.body.review;
             const user = req.body.user;
 
+            // console.log(`${movieId}::${user}::${review}`);
+
             const reviewResponse = await ReviewsDAO.addReview(
                 movieId,
                 review,
                 user
             );
-            res.json({status: 'success'});
+            res.json({status: 'success',Movie_id:req.body.movieId});
         } catch (e) {
             res.status(500).json({error: e.message});
         }

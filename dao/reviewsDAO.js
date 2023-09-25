@@ -43,8 +43,8 @@ export default class ReviewsDAO {
     }
 
     static async getReviewsByMovieId(movieId) {
-        console.log('mov', movieId);
         try {
+            // finding multiple items returns a cursor
             const cursor = await reviews.find(
                 { movieId: parseInt(moveId) }
             );
@@ -57,7 +57,6 @@ export default class ReviewsDAO {
     }
 
     static async updateReview(reviewId, user, review) {
-        console.log('rev', reviewId);
         try {
             const updateResponse = await reviews.updateOne(
                 { _id: ObjectId(reviewId) },
