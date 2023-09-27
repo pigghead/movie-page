@@ -67,7 +67,11 @@ export default class ReviewsController {
         try {
             const reviewId = req.params.id;
             const reviewResponse = await ReviewsDAO.deleteReview(reviewId);  // why put this in a const?
-            res.json({status: 'success'});
+            if(reviewResponse === 0) {
+                throw new Error('unable to delete review');
+            } else {
+                res.json({status: 'success'});
+            }
         } catch(e) {
             res.status(500).json({error: e.message});
         }

@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import app from './server.js';
 import mongodb, { MongoClient } from 'mongodb';
 import ReviewsDAO from './dao/reviewsDAO.js';  // dao = data access object, connecting to database
+import https from 'https';
 
 // sets up use for process.env variables (see .env)
 dotenv.config();

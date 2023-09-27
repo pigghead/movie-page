@@ -5,12 +5,9 @@
 body {
     background-color: #131720;
     font-family: sans-serif;
+    color: white;
 }
-
-h3 {
-    color:white;
-}
-
+    
 .topnav {
     overflow: hidden;
     background-color: #131720;
